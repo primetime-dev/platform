@@ -1,0 +1,10 @@
+.state/
+.mise-state/
+.tmp/
+.terragrunt-cache/
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+
+.env

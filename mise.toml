@@ -1,0 +1,55 @@
+[tools]
+doctl = "1.154.0"
+helm = "4.1.4"
+kubectl = "1.34.1"
+shellcheck = "0.11.0"
+shfmt = "3.13.1"
+terraform = "1.9.8"
+terragrunt = "1.0.1"
+
+# [env]
+# ._file = ".env"
+
+[tasks.fmt]
+description = "Format shell scripts and Terraform files"
+run = """
+shfmt -i 2 -w bootstrap/*.sh
+terraform fmt -recursive terraform
+"""
+
+[tasks.lint]
+description = "Lint shell scripts and check Terraform formatting"
+run = """
+shellcheck bootstrap/*.sh
+terraform fmt -check -recursive terraform
+"""
+
+[tasks.plan-testing]
+description = "Plan the testing cluster with Terragrunt"
+dir = "terragrunt/testing"
+run = "terragrunt plan"
+
+[tasks.apply-testing]
+description = "Apply the testing cluster with Terragrunt"
+dir = "terragrunt/testing"
+run = "terragrunt apply"
+
+[tasks.destroy-testing]
+description = "Destroy the testing cluster with Terragrunt"
+dir = "terragrunt/testing"
+run = "terragrunt destroy"
+
+[tasks.bootstrap]
+description = "Apply shared namespaces and install the Kubernetes Dashboard"
+run = """
+./bootstrap/apply-namespaces.sh
+./bootstrap/install-dashboard.sh
+"""
+
+[tasks.dashboard-token]
+description = "Create a Kubernetes Dashboard login token"
+run = "kubectl -n kubernetes-dashboard create token admin-user"
+
+[tasks.dashboard-port-forward]
+description = "Port-forward the Kubernetes Dashboard proxy service"
+run = "kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443"
