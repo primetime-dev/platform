@@ -7,7 +7,7 @@ This repository owns platform-layer assets for the demo environment story.
 - reusable Terraform module for a DigitalOcean Kubernetes cluster
 - Terragrunt environment separation for `testing` and `production`
 - shared namespace manifests
-- local bootstrap scripts for namespaces and Kubernetes Dashboard
+- local bootstrap scripts for namespaces and Headlamp
 
 ## Out of Scope
 
@@ -65,8 +65,8 @@ mise run plan-testing
 mise run apply-testing
 mise run destroy-testing
 mise run bootstrap
-mise run dashboard-token
-mise run dashboard-port-forward
+mise run headlamp-token
+mise run headlamp-port-forward
 ```
 
 ## Local State
@@ -92,21 +92,23 @@ mise run apply-testing
 doctl kubernetes cluster kubeconfig save primetime-testing
 ```
 
-## Bootstrap Shared Namespaces And Dashboard
+## Bootstrap Shared Namespaces And Headlamp
 
 ```bash
 mise run bootstrap
 ```
 
-## Open The Dashboard
+## Open Headlamp
 
 ```bash
-mise run dashboard-token
-mise run dashboard-port-forward
+mise run headlamp-token
+mise run headlamp-port-forward
 ```
 
-If the dashboard service name differs in a later chart release, inspect the namespace
-services and use the proxy service that was created.
+Then open `http://localhost:4466`.
+
+If the Headlamp service port differs in a later chart release, inspect the namespace
+services and use the service and port printed by the install script.
 
 ## Destroy The Testing Cluster
 

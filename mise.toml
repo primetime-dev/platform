@@ -7,8 +7,8 @@ shfmt = "3.13.1"
 terraform = "1.9.8"
 terragrunt = "1.0.1"
 
-# [env]
-# ._file = ".env"
+[env]
+'_'.file = { path = '.env', redact = true}
 
 [tasks.fmt]
 description = "Format shell scripts and Terraform files"
@@ -40,16 +40,19 @@ dir = "terragrunt/testing"
 run = "terragrunt destroy"
 
 [tasks.bootstrap]
-description = "Apply shared namespaces and install the Kubernetes Dashboard"
+description = "Apply shared namespaces and install Headlamp"
 run = """
 ./bootstrap/apply-namespaces.sh
-./bootstrap/install-dashboard.sh
+./bootstrap/install-headlamp.sh
 """
 
-[tasks.dashboard-token]
-description = "Create a Kubernetes Dashboard login token"
-run = "kubectl -n kubernetes-dashboard create token admin-user"
+[tasks.headlamp-token]
+description = "Create a Headlamp login token"
+run = "kubectl -n headlamp create token admin-user"
 
-[tasks.dashboard-port-forward]
-description = "Port-forward the Kubernetes Dashboard proxy service"
-run = "kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443"
+[tasks.headlamp-port-forward]
+description = "Port-forward the Headlamp service"
+run = """
+HEADLAMP_SERVICE_PORT="$(kubectl -n headlamp get svc headlamp -o jsonpath='{.spec.ports[0].port}')"
+kubectl -n headlamp port-forward svc/headlamp "4466:${HEADLAMP_SERVICE_PORT}"
+"""

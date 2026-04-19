@@ -17,7 +17,7 @@ EOF
 locals {
   environment = basename(get_terragrunt_dir())
   region      = get_env("DOKS_REGION", "ams3")
-  kubernetes_version = "1.31.2-do.0"
+  kubernetes_version = "1.35.1-do.2"
   maintenance_policy = {
     day        = "sunday"
     start_time = "02:00"

@@ -14,10 +14,10 @@ These scripts handle the light post-cluster setup for the demo environment.
 ./platform/bootstrap/apply-namespaces.sh
 ```
 
-## Install the dashboard
+## Install Headlamp
 
 ```bash
-./platform/bootstrap/install-dashboard.sh
+./platform/bootstrap/install-headlamp.sh
 ```
 
 The install script creates an `admin-user` service account and cluster role binding.
@@ -25,21 +25,23 @@ The install script creates an `admin-user` service account and cluster role bind
 ## Get a login token
 
 ```bash
-kubectl -n kubernetes-dashboard create token admin-user
+kubectl -n headlamp create token admin-user
 ```
 
-## Port-forward the dashboard
+## Port-forward Headlamp
 
-Use the service name printed by the install script. On current chart releases this is
-typically:
+Use the service name and port printed by the install script. On current chart releases
+this is typically:
 
 ```bash
-kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+kubectl -n headlamp port-forward svc/headlamp 4466:80
 ```
 
-If the chart changes in a later release, list the services and use the proxy service
-it created:
+Then open `http://localhost:4466`.
+
+If the chart changes in a later release, list the services and use the Headlamp
+service it created:
 
 ```bash
-kubectl -n kubernetes-dashboard get svc
+kubectl -n headlamp get svc
 ```
