@@ -37,7 +37,7 @@ run = "terragrunt apply"
 [tasks.destroy-testing]
 description = "Destroy the testing cluster with Terragrunt"
 dir = "terragrunt/testing"
-run = "terragrunt destroy"
+run = "terragrunt destroy -auto-approve"
 
 [tasks.bootstrap]
 description = "Apply shared namespaces and install Headlamp"
